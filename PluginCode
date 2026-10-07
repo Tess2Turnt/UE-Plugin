@@ -1,1 +1,175 @@
+from PIL import Image
+import os
+import numpy as np
+import unreal
+import tkinter as tk
+import json
+from tkinter import filedialog
 
+cwd = os.getcwd() 
+print("Current working directory:", cwd) 
+
+Image.MAX_IMAGE_PIXELS = 500_000_000
+
+#Importing TIFF/TIF file
+def importTIF ():
+    #GUI
+    root = tk.Tk() 
+    root.attributes('-topmost', True)
+    #File Path
+    tiffpath = None
+    tiffpath = filedialog.askopenfilename(
+        title="Select a TIFF file",
+        filetypes=[("TIFF files", "*.tif *.tiff"), ("All files", "*.*")])
+    root.destroy()
+    return tiffpath
+
+#Convert to PNG
+def tifToData(tiffpath):
+    if not tiffpath or not os.path.isfile(tiffpath):
+        print("No file selected or file not found")
+        return (None, None)
+    try:
+        #Collect data
+        img = Image.open(tiffpath)
+        extentX, extentY = getTiffExtent(img)
+        data = np.array(img, dtype=np.float32)
+        print(f"Tiff shape: {data.shape} Datatype: {data.dtype}")
+        data[data <= -9999] = np.nan
+        lo = float(np.nanmin(data))
+        hi = float(np.nanmax(data))
+        if hi == lo:
+            print("Flat or empty elevation data.")
+            return (None, None)
+        
+        #Heightdata to 16-bit greyscale
+        scaled = (data - lo) / (hi - lo) * 65535.0
+        scaled = np.nan_to_num(scaled, nan=0.0).astype(np.float32)
+        fimg = Image.fromarray(scaled, mode="F").resize((3049, 3049), Image.BICUBIC)
+        png16 = np.clip(np.array(fimg), 0, 65535).astype(np.uint16)
+        pngImg = Image.fromarray(png16)
+
+        #Save image
+        root = tk.Tk()
+        root.attributes('-topmost', True)
+        folder = filedialog.askdirectory(title="Select a place to save the image.")
+        root.destroy()
+        filename = os.path.splitext(os.path.basename(tiffpath))[0] + ".png"
+        outputPath = os.path.join(folder, filename) if folder else os.path.splitext(tiffpath)[0] + ".png"
+        pngImg.save(outputPath, format="PNG")
+        print("Saved PNG image to: " + outputPath)
+
+        #Save res and extent in json file
+        resX, resY = pngImg.size
+        meta = {"extentX": extentX, "extentY": extentY, "resX": resX, "resY": resY}
+        with open(os.path.splitext(outputPath)[0] + ".json", "w") as f:
+            json.dump(meta, f)
+        return (outputPath, data)
+    except Exception as e:
+        print(f"Failure to convert TIFF to PNG: {e}")
+        return (None, None)
+
+#Convert to height values
+def heightValuesFromPNG(pixelData):
+    if pixelData is None:
+        print("No data has been collected.")
+        return (None, None, None)
+    #Heights to be displayed in widget
+    lo = float(np.nanmin(pixelData))
+    hi = float(np.nanmax(pixelData))
+    print(f"Minimum: {lo}, Mean: {np.nanmean(pixelData)}, Maximum: {hi}")
+    root = tk.Tk()
+    root.attributes('-topmost', True)
+    outputPath = filedialog.asksaveasfilename(
+        title="Select a place to save height data.",
+        defaultextension=".npy",
+        filetypes=[("NumPy-fil", "*.npy"), ("Textfil", "*.txt")])
+    root.destroy()
+    if not outputPath:
+        print("No path chosen.")
+        return (None, None, None)
+    try:
+        if outputPath.endswith(".npy"):
+            np.save(outputPath, pixelData)
+        else:
+            np.savetxt(outputPath, pixelData)
+        print(f"Height values saved to: {outputPath}")
+        return (outputPath, lo, hi)
+    except Exception as e:
+        print(f"Height values failed to be saved: {e}")
+        return (None, None, None)
+
+def scaleCalcultions(texSizeX, resX, texSizeY, resY):
+    #Scale calculations displayed in widget
+    scaleX = texSizeX / resX * 100
+    scaleY = texSizeY / resY * 100
+    return scaleX, scaleY
+
+def getTiffExtent(img):
+    #Texture size based on the size of chosen geodata
+    scale = img.tag_v2.get(33550)
+    if not scale:
+        return None, None
+    pixelX, pixelY = scale[0], scale[1]
+    width, height = img.size
+    return pixelX * width, pixelY * height
+
+def executeAll():
+    #Creates png and saves data from geodata
+    tiffPath = importTIF()
+    pngPath, pixelData = tifToData(tiffPath)
+    if not pngPath:
+        print("Conversion failed.")
+        return (None, None)
+    print("Conversion complete. PNG: " + pngPath)
+    dataPath, lo, hi = heightValuesFromPNG(pixelData)
+    return (lo, hi)
+
+def importHeightUnreal():
+    #Import any landscape from png and data
+    root = tk.Tk()
+    root.attributes('-topmost', True)
+    pngFile = filedialog.askopenfilename(title="Select the generated PNG image",
+        filetypes=[("PNG files", "*.png")])
+    dataFile = filedialog.askopenfilename(title="Select the generated height data",
+        filetypes=[("NumPy-fil", "*.npy"), ("Textfil", "*.txt")])
+    root.destroy()
+
+    if not pngFile or not dataFile:
+        print("Both files must be selected.")
+        return None, None, None, None, None, None
+    try:
+        heightData = np.load(dataFile) if dataFile.endswith(".npy") else np.loadtxt(dataFile)
+        with open(os.path.splitext(pngFile)[0] + ".json") as f:
+            meta = json.load(f)
+    except Exception as e:
+        print(f"Failed to load data: {e}")
+        return None, None, None, None, None, None
+    #Scale values from json file
+    if meta["extentX"] is None:
+        print("TIFF file is missing required geodata.")
+        return None, None, None, None, None, None
+
+    #Calculate values for manual input
+    minHeight = float(np.nanmin(heightData))
+    maxHeight = float(np.nanmax(heightData))
+    zScale = (maxHeight - minHeight) / 512 * 100
+    scaleX, scaleY = scaleCalcultions(meta["extentX"], meta["resX"], meta["extentY"], meta["resY"])
+    print(f"Min: {minHeight}, Max: {maxHeight}, Scale: {scaleX}, {scaleY}, {zScale}")
+    return pngFile, minHeight, maxHeight, scaleX, scaleY, zScale
+
+def importHeightForBlueprint():
+    #Import heightmap to UE5 and get data to display in widget
+    pngFile, minHeight, maxHeight, scaleX, scaleY, zScale = importHeightUnreal()
+    if not pngFile:
+        return None, 0.0, 0.0, 0.0, 0.0, 0.0
+    task = unreal.AssetImportTask()
+    task.filename = pngFile
+    task.destination_path = "/Game/Heightmaps"
+    task.automated = True
+    task.replace_existing = True
+    task.save = True
+    unreal.AssetToolsHelpers.get_asset_tools().import_asset_tasks([task])
+    assetName = os.path.splitext(os.path.basename(pngFile))[0]
+    texture = unreal.load_asset(f"/Game/Heightmaps/{assetName}")
+    return texture, minHeight, maxHeight, scaleX, scaleY, zScale
