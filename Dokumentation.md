@@ -78,6 +78,14 @@ Plugin-programmet använder vanliga Windows-fönster för att välja och spara f
 ## 6. Användarguide
 
 ### 6.1 Konvertera en TIFF fil
+- Tryck på Import i widgeten.
+- Välj en GeoTIFF-fil (.tif eller .tiff) i filfönstret.
+- Välj en mapp där PNG-bilden ska sparas.
+- Välj filnamn och plats för höjddatan (.npy eller .txt).
+- Vänta tills konverteringen är klar. Förloppet visas i Output Log, och meddelandet "Conversion complete" visas när programmet är färdigt.
+
+
+
 
 ### 6.2 Inställningar
 
