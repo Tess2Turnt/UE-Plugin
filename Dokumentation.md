@@ -3,7 +3,7 @@
 ## 1. Överblick
 Pluginapplikationen är skapad med syfte att förenkla importen av höjddata från filer som innehåller inbäddad geografisk metadata och georeferering (GeoTIFF) för användning tillsammans med Unreal Engines (UE) inbyggda lanskapfunktion.
 
-- **Namn på plugin:** TiffToLandscape
+- **Namn på plugin:** TiffConversion
 - **Version:** 1.0.0
 - **Stödda Unreal Engine Versioner:** 5.7+
 - **Plattformar:** Windows
@@ -25,26 +25,26 @@ Pluginapplikationen är skapad med syfte att förenkla importen av höjddata fr�
 - Windows 10 eller senare versioner av programvaran.
 
 ### 3.2 Installation steg för steg
-1. Kopiera mappen `TiffToLandscape` och klistra in den i filsökvägen till ditt önskade UE projekt: /DittProjekt/Plugins .
+1. Kopiera mappen `TiffConversion` och klistra in den i filsökvägen till ditt önskade UE projekt: /DittProjekt/Plugins .
 2. Öppna eller starta om projektet för att importera de nya filerna.
 3. Öppna **Edit → Plugins**.
-4. Tillåt **TiffToLandscape**.Om alternativet inte dyker upp, öppna **Plugin Directories** och lägg till ett element under **Additional plugin directories**. Välj filsökvägen till den tillagda `TiffToLandscape` filen i ditt projekt.
+4. Tillåt **TiffToLandscape**.Om alternativet inte dyker upp, öppna **Plugin Directories** och lägg till ett element under **Additional plugin directories**. Välj filsökvägen till den tillagda `TiffConversion` filen i ditt projekt.
 7. Stäng ner fönstret och starta om Unreal Engine.
 8. Öppna åter **Edit → Plugins**. Där bör du se **External → Others** i den vänstra kolumnnen.
 9. Aktivera tillägget.
-10. Starta om Unreal engine. Om mappen `TiffToLandscape` ligger i den korrekta filsökvägen så ska den även dyka upp i **Content Drawer**.
+10. Starta om Unreal engine. Om mappen `TiffConversion` ligger i den korrekta filsökvägen så ska den även dyka upp i **Content Drawer**.
 
 ---
 
 ## 4. Instruktioner för användning
 
 ### 4.1 Aktivera plugin
-Se till att tillägget är aktiverat genom att dubbelkolla att **TiffToLandscape** är tillåten.
-**Edit → Plugins → Other → TiffToLandscape**
+Se till att tillägget är aktiverat genom att dubbelkolla att **TiffConversion** är tillåten.
+**Edit → Plugins → Other → TiffConversion**
 
 ### 4.2 Arbetsflöde och användning
 1. Öppna **Content Browser**.
-2. Öppna **Plugins → TiffToLandscape → Editor**
+2. Öppna **Plugins → TiffConversion → Editor**
 3. Högerklicka på **Landscape_EUW** och välj sedan **Run Editor Utility Widget** i menyn.
 4. Börja genom att trycka på den översta knappen märkt **Import**.
 6. Navigera och välj en fil med geodata i formen `.TIFF` eller `.TIF` från hårddisken.
@@ -85,7 +85,7 @@ Plugin-programmet använder vanliga Windows-fönster för att välja och spara f
 - Vänta tills konverteringen är klar. Förloppet visas i Output Log, och meddelandet "Conversion complete" visas när programmet är färdigt.
 
 När konverteringen är klar så har det skapats:
-- **X.png** En PNG fil i formen av en höjdkarta i 16-bitars gråskala.
+- **x.png** En PNG fil i formen av en höjdkarta i 16-bitars gråskala.
 - **x.npy, x.txt** En NPY eller TXT fil som innehåller data över landskapets höjdvärden i meter.
 - **x.json** En fil innehållandes landskapets utbredning och bildens upplösning.
 > Byt ej namn eller flytta på json filen då detta kan förhindra att skalvärdena läses in.
