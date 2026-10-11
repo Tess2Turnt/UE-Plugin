@@ -11,7 +11,7 @@ Pluginapplikationen är skapad med syfte att förenkla importen av höjddata fr�
 
 ---
 
-## 2. Features
+## 2. Egenskaper
 - Möjliggör import av data direkt från `.TIF/.TIFF` filer till Unreal engine.
 - Skapar och importerar en textur i PNG format för höjdvärden lagrade i TIF/TIFF filen.
 - Beräknar utifrån skala och upplösning, indata som användaren bör använda under lanskapskreationen för att uppnå önskad effekt.
@@ -106,31 +106,28 @@ This version does not expose Blueprint nodes.
 
 ---
 
-## 9. Limitations
-- Materials are not imported
-- Only triangulated geometry is supported
-- No support for OBJ groups or smoothing groups
-
+## 9. Begränsningar
+- 
 ---
 
-## 10. Troubleshooting
+## 10. Kända problem
 
-| Issue | Cause | Solution |
+| Problem | Anledning | Lösning |
 |-----|------|----------|
-| Mesh appears too small | Scale mismatch | Increase Import Scale |
-| Import fails | Invalid OBJ format | Re-export OBJ with triangulation |
-| Missing normals | Normals disabled | Enable Import Normals |
+| x | x | x |
+| x | x | x |
+| x | x | x |
 
 ---
 
-## 11. Version History
+## 11. Versionhistorik
 
-| Version | Date | Notes |
+| Version | Datum |
 |-------|------|-------|
-| 1.0.0 | 2026-01-15 | Initial release |
+| 1.0.0 | 2026-10-xx | Publicering |
 
 ---
 
-## 12. Support & Contact
+## 12. Kontaktinformation
 
-- Contact: tools-support@yourstudio.com
+- Email: tess04.tf@gmail.com
