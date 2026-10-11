@@ -153,7 +153,7 @@ def importHeightUnreal():
     #Calculate values for manual input
     minHeight = float(np.nanmin(heightData))
     maxHeight = float(np.nanmax(heightData))
-    zScale = (maxHeight - minHeight) / 512 * 100
+    zScale = (maxHeight - minHeight) / 512 * 10000
     scaleX, scaleY = scaleCalcultions(meta["extentX"], meta["resX"], meta["extentY"], meta["resY"])
     print(f"Min: {minHeight}, Max: {maxHeight}, Scale: {scaleX}, {scaleY}, {zScale}")
     return pngFile, minHeight, maxHeight, scaleX, scaleY, zScale
