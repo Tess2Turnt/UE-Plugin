@@ -48,9 +48,14 @@ Se till att tillägget är aktiverat genom att dubbelkolla att **TiffToLandscape
 3. Högerklicka på **Landscape_EUW** och välj sedan **Run Editor Utility Widget** i menyn.
 4. Börja genom att trycka på den översta knappen märkt **Import**.
 6. Navigera och välj en fil med geodata i formen `.TIFF` eller `.TIF` från hårddisken.
-7. Därefter, välj även en filsökväg där texturen i formatet `.PNG` sparas samt filsökväg och namn på filen där höjddatan sparas `.NPY` eller `.txt`.
-8. 
-
+7. Därefter, välj även en filsökväg där texturen i formatet `.PNG` sparas samt filsökväg och namn på filen där höjddatan sparas `.NPY` eller `.txt`. En `.json` fil sparas även för att hantera utbredning och upplösning. Det är viktigt att inte redigera, flytta eller radera denna fil.
+8. När importeringen och hanterinen är klar, klicka på knappen märkt **Load** och välj sedan din skapade höjdkarta `.PNG` och den sparade datan `.NPY` eller `.txt`.
+9. Verktyget visar då all information som är nödvändig för att skapa ett landskap från höjdkartan i Unreal Engines landskapsverktyg:
+    Höjkarta
+    Maximala höjden
+    Minimala höjden
+    Skala för X, Y och Z.
+11. Öppna **Landscape Mode → Manage → Import from File** och välj PNG-filen som Heightmap File. Ange sedan skalvärdena från widgeten samt klicka på **Fit to data** för att automatiskt justera övriga inställningar.
 
 ---
 
