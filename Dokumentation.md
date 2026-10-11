@@ -59,27 +59,27 @@ Se till att tillägget är aktiverat genom att dubbelkolla att **TiffToLandscape
 
 ---
 
-## 5. User Interface
+## 5. Användargränssnitt
 
-### 5.1 Menu Entries
-- **Toolbar:** `Import OBJ File`
-- **Context Menu (Content Browser):** `Import → OBJ File`
+### 5.1 Widgetens olika delar
+| Element | Användning |
+|-------|-------------|
+|Import|Konvertering av en vald TIFF till PNG och höjddata|
+|Load|Inläsning av sparade höjdvärden, höjdkarta och data|
+|Heightmap|Förhandsvisning av den skapade höjdkartan|
+|Maximum/Minimum|Högsta och lägsta höjd i originaldatan|
+|Scale X,Y,Z|Värden att skriva in i tillhörande input för skala vid landscape-importen|
 
-### 5.2 Import Dialog
-The import dialog allows users to configure scale and normal handling before importing.
+### 5.2 Fildialoger
+Plugin-programmet använder vanliga Windows-fönster för att välja och spara filer. Fönstren öppnas överst.
 
 ---
 
-## 6. Usage Guide
+## 6. Användarguide
 
-### 6.1 Importing an OBJ File
-1. Click **Import OBJ File**.
-2. Select a valid `.obj` file.
-3. Set the desired import scale.
-4. Enable or disable normal import.
-5. Confirm to create the Static Mesh.
+### 6.1 Konvertera en TIFF fil
 
-### 6.2 Import Settings
+### 6.2 Inställningar
 
 | Setting | Description | Default |
 |-------|-------------|---------|
@@ -87,27 +87,27 @@ The import dialog allows users to configure scale and normal handling before imp
 | Import Normals | Uses normals from OBJ file | Enabled |
 | Generate Collision | Automatically creates collision | Enabled |
 
----
+### 6.2 Skalformler
 
-## 7. Data Handling & Output
-- **Asset Type:** Static Mesh
-- **Naming Convention:** `<OBJFileName>_SM`
-- **Destination Folder:** Currently selected Content Browser folder
+### 6.2 Termer
 
 ---
 
-## 8. Scripting / API Reference
+## 7. Datahantering och utdata
 
-### 8.1 Blueprint Support
-This version does not expose Blueprint nodes.
+---
 
-### 8.2 C++ API
-**Primary Class:**  
-`SimpleOBJImporter`
+## 8. Skript / API-referens
 
-**Key Methods:**
-- `ImportOBJ(const FString& FilePath)`
-- `CreateStaticMesh(...)`
+### 8.1 Blueprintstöd
+
+
+### 8.2 Python API
+
+| x |x|
+|-------|-------------|
+|x|xa|
+|x|x|
 
 ---
 
