@@ -4,10 +4,10 @@
 Pluginapplikationen är skapad med syfte att förenkla importen av höjddata från filer som innehåller inbäddad geografisk metadata och georeferering (GeoTIFF) för användning tillsammans med Unreal Engines (UE) inbyggda lanskapfunktion.
 
 - **Namn på plugin:** TiffToLandscape
-- **Current Version:** 1.0.0
-- **Supported Unreal Engine Versions:** 5.7+
-- **Platforms:** Windows
-- **Intended Audience:** Planeringsarkitekter, Landskapsarkitekter och övriga UEanvändare
+- **Version:** 1.0.0
+- **Stödda Unreal Engine Versioner:** 5.7+
+- **Plattformar:** Windows
+- **Målgrupp:** Planeringsarkitekter, Landskapsarkitekter och övriga UEanvändare
 
 ---
 
@@ -64,11 +64,11 @@ Se till att tillägget är aktiverat genom att dubbelkolla att **TiffToLandscape
 ### 5.1 Widgetens olika delar
 | Element | Användning |
 |-------|-------------|
-|Import|Konvertering av en vald TIFF till PNG och höjddata|
-|Load|Inläsning av sparade höjdvärden, höjdkarta och data|
-|Heightmap|Förhandsvisning av den skapade höjdkartan|
-|Maximum/Minimum|Högsta och lägsta höjd i originaldatan|
-|Scale X,Y,Z|Värden att skriva in i tillhörande input för skala vid landscape-importen|
+|Import|Konvertering av en vald TIFF till PNG och höjddata.|
+|Load|Inläsning av sparade höjdvärden, höjdkarta och data.|
+|Heightmap|Förhandsvisning av den skapade höjdkartan.|
+|Maximum/Minimum|Högsta och lägsta höjd i originaldatan.|
+|Scale X,Y,Z|Värden att skriva in i tillhörande input för skala vid landscape-importen.|
 
 ### 5.2 Fildialoger
 Plugin-programmet använder vanliga Windows-fönster för att välja och spara filer. Fönstren öppnas överst.
@@ -84,24 +84,31 @@ Plugin-programmet använder vanliga Windows-fönster för att välja och spara f
 - Välj filnamn och plats för höjddatan (.npy eller .txt).
 - Vänta tills konverteringen är klar. Förloppet visas i Output Log, och meddelandet "Conversion complete" visas när programmet är färdigt.
 
-
-
+När konverteringen är klar så har det skapats:
+- **X.png** En PNG fil i formen av en höjdkarta i 16-bitars gråskala.
+- **x.npy, x.txt** En NPY eller TXT fil som innehåller data över landskapets höjdvärden i meter.
+- **x.json** En fil innehållandes landskapets utbredning och bildens upplösning.
+> Byt ej namn eller flytta på json filen då detta kan förhindra att skalvärdena läses in.
 
 ### 6.2 Inställningar
 
-| Setting | Description | Default |
+| Inställning | Beskrivning | Värde |
 |-------|-------------|---------|
-| Import Scale | Multiplier applied to mesh size | 1.0 |
-| Import Normals | Uses normals from OBJ file | Enabled |
-| Generate Collision | Automatically creates collision | Enabled |
+| Utdataupplösning | Storlek på PNG-filen | 3049 × 3049 |
+| Bitdjup | Höjdkartans precision | 16-bitar |
+| Nodata-värde | Pixlar med värde ≤ -9999 sätts till lägsta höjd | -9999 |
 
 ### 6.2 Skalformler
 
-### 6.2 Termer
-
----
+- Skala X = TexturStorlekX / UpplösningX * 100
+- Skala Y = TexturStorlekY / UpplösningY * 100
+- Skala Z = (MaxHöjd - MinHöjd) / 512 * 10000
 
 ## 7. Datahantering och utdata
+ - Heightmap: .png, 16 bitar, gråskala, importeras till /Game/Heightmaps
+ - Höjddata: .npy eller .txt med originalets höjdvärden i meter
+ - Metadata: .json med extentX, extentY, resX, resY
+ - Namngivning: PNG och JSON får samma namn som TIFF-filen
 
 ---
 
@@ -109,35 +116,55 @@ Plugin-programmet använder vanliga Windows-fönster för att välja och spara f
 
 ### 8.1 Blueprintstöd
 
+Widgeten anropar Python via Execute Python Script, och variabler används för att lagra värden samt visa dessa i widgeten.
 
-### 8.2 Python API
+|Utgång|Typ|Variabel|
+|------|---|--------|
+|png_height|Texture2D|Heightmap|
+|min_height_value|Float|Min Height|
+|max_height_value|Float|Max Height|
+|scale_x|Float|X|
+|scale_y|Float|Y|
+|scale_z|Float|Z|
 
-| x |x|
+### 8.2 Python API (Converter.py)
+
+| Funktion |Beskrivning av funktion|
 |-------|-------------|
-|x|xa|
-|x|x|
+|executeAll()|	Hela flödet: välj TIFF, konvertera, spara|
+|tifToData(path)|Konverterar TIFF till PNG och skriver JSON|
+|getTiffExtent(img)|Läser GeoTIFF-taggen och räknar ut utbredning i meter|
+|heightValuesFromPNG(data)|Sparar höjddata som .npy/.txt|
+|scaleCalcultions(...)|	Räknar ut skala X och Y|
+|importHeightForBlueprint()|Importerar PNG till Unreal och returnerar värden till widgeten|
 
 ---
 
 ## 9. Begränsningar
-- 
+ - Endast TIFF filer i gråskala stöds.
+ - Skalan kan bara räknas ut om filen är en GeoTIFF med meter som enhet.
+ - Utdata är alltid 3049 × 3049. En icke-kvadratisk TIFF sträcks ut till en kvadrat.
+ - Pixlar med nodata (≤ -9999) blir lägsta höjd.
+ - Maxstorlek är 500 miljoner pixlar på originalfilen.
+ - Konverteringen sker i editorn och fungerar inte i en byggd applikation.
+ - Kräver aktiverat Python-plugin.
+ - PNG:n lagrar bara relativa höjder. Riktiga höjder kräver .npy/.txt-filen.
 ---
 
 ## 10. Kända problem
 
 | Problem | Anledning | Lösning |
 |-----|------|----------|
-| x | x | x |
-| x | x | x |
-| x | x | x |
+| Load misslyckas | .json-filen saknas bredvid PNG:n | Kör Import igen, och byt inte namn på filerna |
+| Skala i z axeln visar fel värde | Fel värde i python-funktion **importHeightUnreal()** | Värde förändrat från 100 till 10000 i uträkning av Z-skala|
+| Långa väntetider vid användning av konverteraren | Stora TIFF filer | Välj mer begänsade filer för att minska tiden|
 
 ---
 
 ## 11. Versionhistorik
 
 | Version | Datum |
-|-------|------|-------|
-| 1.0.0 | 2026-10-xx | Publicering |
+| 1.0.0 | 2026-10-11 | Publicering |
 
 ---
 
