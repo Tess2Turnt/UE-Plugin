@@ -88,7 +88,7 @@ När konverteringen är klar så har det skapats:
 - **x.png** En PNG fil i formen av en höjdkarta i 16-bitars gråskala.
 - **x.npy, x.txt** En NPY eller TXT fil som innehåller data över landskapets höjdvärden i meter.
 - **x.json** En fil innehållandes landskapets utbredning och bildens upplösning.
-> Byt ej namn eller flytta på json filen då detta kan förhindra att skalvärdena läses in.
+> Byt ej namn eller flytta på JSON filen då detta kan förhindra att skalvärdena läses in.
 
 ### 6.2 Inställningar
 
@@ -105,9 +105,9 @@ När konverteringen är klar så har det skapats:
 - Skala Z = (MaxHöjd - MinHöjd) / 512 * 10000
 
 ## 7. Datahantering och utdata
- - Heightmap: .png, 16 bitar, gråskala, importeras till /Game/Heightmaps
- - Höjddata: .npy eller .txt med originalets höjdvärden i meter
- - Metadata: .json med extentX, extentY, resX, resY
+ - Heightmap: PNG, 16 bitar, gråskala, importeras till /Game/Heightmaps
+ - Höjddata: NPY eller TXT med originalets höjdvärden i meter
+ - Metadata: JSON med extentX, extentY, resX, resY
  - Namngivning: PNG och JSON får samma namn som TIFF-filen
 
 ---
@@ -155,7 +155,7 @@ Widgeten anropar Python via Execute Python Script, och variabler används för a
 
 | Problem | Anledning | Lösning |
 |-----|------|----------|
-| Load misslyckas | .json-filen saknas bredvid PNG:n | Kör Import igen, och byt inte namn på filerna |
+| Load misslyckas | JSON-filen saknas bredvid PNG:n | Kör **Import** igen och byt inte namn på filerna |
 | Skala i z axeln visar fel värde | Fel värde i python-funktion **importHeightUnreal()** | Värde förändrat från 100 till 10000 i uträkning av Z-skala|
 | Långa väntetider vid användning av konverteraren | Stora TIFF filer | Välj mer begänsade filer för att minska tiden|
 
@@ -163,7 +163,7 @@ Widgeten anropar Python via Execute Python Script, och variabler används för a
 
 ## 11. Versionhistorik
 
-| Version | Datum |
+| Version | Datum | Typ |
 | 1.0.0 | 2026-10-11 | Publicering |
 
 ---
