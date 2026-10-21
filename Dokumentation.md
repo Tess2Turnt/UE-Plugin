@@ -46,16 +46,16 @@ Se till att tillägget är aktiverat genom att dubbelkolla att **TiffConversion*
 1. Öppna **Content Browser**.
 2. Öppna **Plugins → TiffConversion → Editor**
 3. Högerklicka på **Landscape_EUW** och välj sedan **Run Editor Utility Widget** i menyn.
-4. Börja genom att trycka på den översta knappen märkt **Import**.
+4. Börja genom att trycka på den översta knappen märkt **Convert TIFF**.
 6. Navigera och välj en fil med geodata i formen `.TIFF` eller `.TIF` från hårddisken.
 7. Därefter, välj även en filsökväg där texturen i formatet `.PNG` sparas samt filsökväg och namn på filen där höjddatan sparas `.NPY` eller `.txt`. En `.json` fil sparas även för att hantera utbredning och upplösning. Det är viktigt att inte redigera, flytta eller radera denna fil.
-8. När importeringen och hanterinen är klar, klicka på knappen märkt **Load** och välj sedan din skapade höjdkarta `.PNG` och den sparade datan `.NPY` eller `.txt`.
 9. Verktyget visar då all information som är nödvändig för att skapa ett landskap från höjdkartan i Unreal Engines landskapsverktyg:
     Höjkarta
     Maximala höjden
     Minimala höjden
     Skala för X, Y och Z.
 11. Öppna **Landscape Mode → Manage → Import from File** och välj PNG-filen som Heightmap File. Ange sedan skalvärdena från widgeten samt klicka på **Fit to data** för att automatiskt justera övriga inställningar.
+12. Om du vill hantera och se relevanta värden för redan konverterad data, då istället klicka på knappen märkt **ILoad data** och välj sedan din skapade höjdkarta `.PNG` och den sparade datan `.NPY` eller `.txt`.
 
 ---
 
@@ -64,11 +64,12 @@ Se till att tillägget är aktiverat genom att dubbelkolla att **TiffConversion*
 ### 5.1 Widgetens olika delar
 | Element | Användning |
 |-------|-------------|
-|Import|Konvertering av en vald TIFF till PNG och höjddata.|
-|Load|Inläsning av sparade höjdvärden, höjdkarta och data.|
-|Heightmap|Förhandsvisning av den skapade höjdkartan.|
+|Open in browser|Öppnad sökvägen till dokumentationen i din valda webbläsare.|
+|Convert TIFF|Konvertering av en vald TIFF till PNG och höjddata.|
+|Load data|Inläsning av sparade höjdvärden, höjdkarta och data.|
 |Maximum/Minimum|Högsta och lägsta höjd i originaldatan.|
 |Scale X,Y,Z|Värden att skriva in i tillhörande input för skala vid landscape-importen.|
+|Heightmap|Förhandsvisning av den skapade höjdkartan.|
 
 ### 5.2 Fildialoger
 Plugin-programmet använder vanliga Windows-fönster för att välja och spara filer. Fönstren öppnas överst.
@@ -78,11 +79,12 @@ Plugin-programmet använder vanliga Windows-fönster för att välja och spara f
 ## 6. Användarguide
 
 ### 6.1 Konvertera en TIFF fil
-- Tryck på Import i widgeten.
+- Tryck på Convert TIFF i widgeten.
 - Välj en GeoTIFF-fil (.tif eller .tiff) i filfönstret.
 - Välj en mapp där PNG-bilden ska sparas.
 - Välj filnamn och plats för höjddatan (.npy eller .txt).
-- Vänta tills konverteringen är klar. Förloppet visas i Output Log, och meddelandet "Conversion complete" visas när programmet är färdigt.
+- Vänta tills konverteringen är klar. Förloppet visas i Output Log, och meddelandet "Conversion complete" visas när programmet är färdigt, samt att relevanta värden visas i widgeten.
+- I Unreal Engines lanskapsläge kan nu ett motsvarande landskap skapas med höjdkartan samt värdena för skalan.
 
 När konverteringen är klar så har det skapats:
 - **x.png** En PNG fil i formen av en höjdkarta i 16-bitars gråskala.
