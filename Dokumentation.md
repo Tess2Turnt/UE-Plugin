@@ -9,6 +9,8 @@ Pluginapplikationen är skapad med syfte att förenkla importen av höjddata fr�
 - **Plattformar:** Windows
 - **Målgrupp:** Planeringsarkitekter, Landskapsarkitekter och övriga UEanvändare
 
+- **OBS! För att detta plugin med säkerhet ska funka så bör python biblioteken numpy, pillow, jason och unreal installeras med -m pipinstall genom filsökvägen till Unreal Engines python.exe.**
+
 ---
 
 ## 2. Egenskaper
