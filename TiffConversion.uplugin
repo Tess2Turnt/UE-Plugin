@@ -1,0 +1,16 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "TiffConversion",
+	"Description": "A Plugin that allows conversions from geoTIFF.",
+	"Category": "Other",
+	"CreatedBy": "TeFo23",
+	"CreatedByURL": "",
+	"DocsURL": "https://github.com/Tess2Turnt/UE-Plugin/blob/main/Dokumentation.md",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EngineVersion": "5.7.0",
+	"CanContainContent": true,
+	"Installed": true
+}
