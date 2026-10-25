@@ -166,7 +166,7 @@ Widgeten anropar Python via Execute Python Script, och variabler används för a
 ## 11. Versionhistorik
 
 | Version | Datum | Typ |
-| 1.0.0 | 2026-10-11 | Publicering |
+| 1.0.0 | 2026-10-25 | Publicering |
 
 ---
 
